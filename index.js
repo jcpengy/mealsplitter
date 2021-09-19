@@ -11,7 +11,6 @@ formNumPpl.addEventListener("submit", e => {
     e.preventDefault(); 
     // take number of people input value and create a list of input fields for each name
     const numPpl = document.getElementById("numPpl").value; 
-    instructionText.innerHTML = "Names of people:"; 
     // clear userInput area 
     // formNumPpl.remove();
 
@@ -50,7 +49,6 @@ formNamesOfPeople.addEventListener("submit", e => {
     // display form dishes
     formDishes.style.display = "block"; 
     // update instructions
-    instructionText.innerHTML = "Dishes"; 
 })
 
 formDishes.addEventListener("submit", e => {
@@ -79,7 +77,7 @@ formDishes.addEventListener("submit", e => {
             var dName = dishNames[j].value; 
             // for each dish create radio button
             var radioBtn = document.createElement("input"); 
-            radioBtn.type = "radio"; 
+            radioBtn.type = "checkbox"; 
             radioBtn.id = `${dName}RadioBtn`;
             radioBtn.name = `${dName}RadioBtn`; 
             radioBtn.value = `${dName}`; 
@@ -148,7 +146,13 @@ function calculateSplits() {
             document.getElementById(`${person}Owes`).innerHTML = currentAmount + dishSplit; 
         }
 
+        // tip calculation
+        // should be split equally across entire party 
+        // 
+
     }
+
+
 
 
    
