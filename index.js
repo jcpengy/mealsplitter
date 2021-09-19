@@ -147,8 +147,12 @@ function calculateSplits() {
         }
 
         // tip calculation
-        // should be split equally across entire party 
-        // 
+        // tip divided by entire party 
+        // subtract contribution from owed 
+        // if negative (person paid for than owed)
+        // distribute negative across other people
+
+        // owed tip amount to ___: 
 
     }
 
