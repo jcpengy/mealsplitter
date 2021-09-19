@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>Meal Split Calculator</title>
+        <link rel="stylesheet" href="index.css">
+    </header>
+    <body>
+        <h1>Meal Split Calculator</h1>
+        <div class="container"> 
+            <p id="instructions">Number of people:</p>
+            <div id="userInput">
+                <form id="formNumberOfPeople">
+                    <input list="numberOfPeople" id="numPpl">
+                    <datalist id="numberOfPeople">
+                        <option value="2">
+                        <option value="3">
+                        <option value="4">
+                        <option value="5">
+                        <option value="6">
+                    </datalist>
+                    <input type="submit" value="Next"/> 
+                </form>
+                <form id="formNamesOfPeople">
+                    <ul id="names">
+
+                    </ul>
+                    <input type="submit" value="Next">
+                </form>
+                <form id="formDishes">
+                    <table id="tableDishes">
+                        <tr>
+                            <th>Dish Name</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" class="dishName">
+                            </td>
+                            <td>
+                                <input type="text" class="dishPrice">
+                            </td>
+                        </tr>
+    
+                    </table>
+                    <button id="addDish" type="button" onclick="addRow()">Add</button>
+                    <input type="submit" value="Next">
+                </form>
+            </div>
+        </div>
+    <script src="index.js"></script>
+    </body>
+</html>
