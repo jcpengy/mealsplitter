@@ -5,7 +5,7 @@ var formDishes = document.getElementById("formDishes");
 var userInputArea = document.getElementById("userInput"); 
 var names = []; 
 var dishMap = new Map(); 
-
+var dishToPeople = new Map(); 
 
 formNumPpl.addEventListener("submit", e => {
     e.preventDefault(); 
@@ -73,19 +73,19 @@ formDishes.addEventListener("submit", e => {
 
         // create form
         var personForm = document.createElement("form"); 
-        personForm.id = `${names[i]}Form`;
+        personForm.id = `${names[i]}`;
 
         for (let j = 0; j < dishNames.length; j++) {
             var dName = dishNames[j].value; 
             // for each dish create radio button
             var radioBtn = document.createElement("input"); 
             radioBtn.type = "radio"; 
-            radioBtn.id = `${names[i]}RadioBtn`;
-            radioBtn.name = `${names[i]}RadioBtn`; 
+            radioBtn.id = `${dName}RadioBtn`;
+            radioBtn.name = `${dName}RadioBtn`; 
             radioBtn.value = `${dName}`; 
             // create label for radio button
             var radioBtnLabel = document.createElement("label"); 
-            radioBtnLabel.for = `${names[i]}RadioBtn`; 
+            radioBtnLabel.for = `${dName}RadioBtn`; 
             radioBtnLabel.innerHTML = `${dName}`; 
             // append to person form
             personForm.appendChild(radioBtn); 
@@ -106,6 +106,51 @@ formDishes.addEventListener("submit", e => {
 })
 
 function calculateSplits() {
+    // create list of names 
+    var splitList = document.createElement("ul"); 
+    for (let i = 0; i < names.length; i++) {
+        // for each name element
+        // span text with total owed (id nameOwes) 
+        var splitEl = document.createElement("li"); 
+        var splitElP = document.createElement("p"); 
+        splitElP.innerHTML = `${names[i]} owes: `; 
+        var splitElSpan = document.createElement("span"); 
+        splitElSpan.innerHTML = 0; 
+        splitElSpan.id = `${names[i]}Owes`; 
+        splitElP.appendChild(splitElSpan); 
+        splitEl.appendChild(splitElP); 
+        splitList.appendChild(splitEl); 
+    }
+
+    userInputArea.appendChild(splitList); 
+
+
+    // map - key: dish name - value: array of people
+
+
+    // for each dish
+    var dishNamesArray = Array.from(dishMap.keys()); 
+    for (let dName of dishNamesArray) {
+        dishToPeople.set(dName, []); 
+        var radioBtnsArray = Array.from(document.getElementsByName(`${dName}RadioBtn`)); 
+        // map dish to array of people who had it 
+        for (button of radioBtnsArray) {
+            if (button.checked) {
+                var personAssigned = button.parentNode.id; 
+                dishToPeople.get(dName).push(personAssigned); 
+            }
+        }
+        var dishSplit = dishMap.get(dName) / dishToPeople.get(dName).length;
+        // add dishSplit amount to each person who had it 
+        var peopleWhoHadDish = dishToPeople.get(dName); 
+        for (person of peopleWhoHadDish) {
+            var currentAmount = parseInt(document.getElementById(`${person}Owes`).innerHTML); 
+            document.getElementById(`${person}Owes`).innerHTML = currentAmount + dishSplit; 
+        }
+
+    }
+
+
    
 }
 
