@@ -6,6 +6,8 @@ var userInputArea = document.getElementById("userInput");
 var names = []; 
 var dishMap = new Map(); 
 var dishToPeople = new Map(); 
+var peopleToOwed = new Map(); 
+var tip = 0; 
 
 formNumPpl.addEventListener("submit", e => {
     e.preventDefault(); 
@@ -62,6 +64,9 @@ formDishes.addEventListener("submit", e => {
         var dPrice = dishPrices[i].value; 
         dishMap.set(dName, dPrice); 
     } 
+    // get tip amount
+    tip = document.getElementById("tip").value; 
+
     // for each person
     for (let i = 0; i < names.length; i++) {
         // create p instruction 'what did ___ have?'
@@ -142,24 +147,32 @@ function calculateSplits() {
         // add dishSplit amount to each person who had it 
         var peopleWhoHadDish = dishToPeople.get(dName); 
         for (person of peopleWhoHadDish) {
+            if (peopleToOwed.has(person)) {
+                var currentAmount = peopleToOwed.get(person); 
+                currentAmount += dishSplit; 
+                peopleToOwed.set(person, currentAmount); 
+            } else {
+                peopleToOwed.set(person, dishSplit); 
+            }
             var currentAmount = parseInt(document.getElementById(`${person}Owes`).innerHTML); 
-            document.getElementById(`${person}Owes`).innerHTML = currentAmount + dishSplit; 
         }
-
-        // tip calculation
-        // tip divided by entire party 
-        // subtract contribution from owed 
-        // if negative (person paid for than owed)
-        // distribute negative across other people
-
-        // owed tip amount to ___: 
-
     }
 
+    // tip calculation - divide proportionally based on what each person ordered
+    // get total of dish prices
+    var dishPricesArray = Array.from(dishMap.values()); 
+    var dishPricesTotal = 0; 
+    for (let i = 0; i < dishPricesArray.length; i++) {
+        dishPricesTotal+=parseInt(dishPricesArray[i]);
+    }
 
+    // add proportion of tip to total amount owed
+    for (let [person, amountOwed] of peopleToOwed) {
+        var proportion = amountOwed / dishPricesTotal; 
+        var totalAmountOwed = amountOwed + (proportion * tip);
 
-
-   
+        document.getElementById(`${person}Owes`).innerHTML = totalAmountOwed; 
+    }  
 }
 
 function addRow(){
